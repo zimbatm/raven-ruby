@@ -30,7 +30,10 @@ module Raven
       end
 
       def sanitize(key, value)
-        if !value.is_a?(String) || value.empty?
+        # IO object have trouble being serialized
+        if value.is_a?(IO)
+          value.inspect
+        elsif !value.is_a?(String) || value.empty?
           value
         elsif VALUES_RE.match(value) or FIELDS_RE.match(key)
           MASK

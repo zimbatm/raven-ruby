@@ -54,4 +54,12 @@ describe Raven::Processor::SanitizeData do
     result['ary2'].should_not eq('[...]')
   end
 
+  it 'should replace IO objects with a string representation' do
+    data = {
+      "io" => $stderr
+    }
+
+    result = @processor.process(data)
+    result['io'].should match(/^#<IO:/)
+  end
 end
